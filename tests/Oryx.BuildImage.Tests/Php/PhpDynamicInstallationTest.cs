@@ -33,7 +33,7 @@ namespace Microsoft.Oryx.Integration.Tests
             }
         }
 
-        [Theory(Skip = "Bug#1259616")]
+        [Theory]
         [MemberData(nameof(VersionAndImageNameData))]
         public void BuildsAppByInstallingSdkDynamically(string phpVersion, string imageName)
         {
@@ -64,13 +64,13 @@ namespace Microsoft.Oryx.Integration.Tests
                 Assert.True(result.IsSuccess);
                 Assert.Contains(
                     $"PHP executable: " +
-                    $"{Path.Combine(BuildScriptGenerator.Constants.TemporaryInstallationDirectoryRoot, PhpConstants.PlatformName, phpVersion)}", result.StdOut);
+                    BuildScriptGenerator.Constants.TemporaryInstallationDirectoryRoot, result.StdOut);
                 Assert.Contains("Installing twig/twig", result.StdErr); // Composer prints its messages to STDERR
             },
             result.GetDebugInfo());
         }
 
-        [Fact(Skip = "Bug#1259616")]
+        [Fact]
         public void BuildsApplication_ByDynamicallyInstalling_IntoCustomDynamicInstallationDir()
         {
             // Arrange
@@ -85,8 +85,6 @@ namespace Microsoft.Oryx.Integration.Tests
                 .AddBuildCommand(
                 $"{appDir} -o {appOutputDir} --platform {PhpConstants.PlatformName} --platform-version {phpVersion} " +
                 $"--dynamic-install-root-dir {expectedDynamicInstallRootDir}")
-                .AddDirectoryExistsCheck(
-                $"{Path.Combine(expectedDynamicInstallRootDir, PhpConstants.PlatformName, phpVersion)}")
                 .ToString();
 
             // Act
@@ -105,7 +103,7 @@ namespace Microsoft.Oryx.Integration.Tests
                 Assert.True(result.IsSuccess);
                 Assert.Contains(
                     $"PHP executable: " +
-                    $"{Path.Combine(expectedDynamicInstallRootDir, PhpConstants.PlatformName, phpVersion)}",
+                    expectedDynamicInstallRootDir,
                     result.StdOut);
                 Assert.Contains($"Installing twig/twig", result.StdErr); // Composer prints its messages to STDERR
             },
