@@ -55,7 +55,7 @@ while read sourceImage; do
     docker tag "$sourceImage" "$acrPmeSpecific"
 
     if [ "$sourceBranchName" == "master" ]; then
-      echo "Tagging the source image with tag $acrNonPmeLatest and $acrPmeLatest..."
+      echo "Tagging the source image with tag $acrPmeLatest..."
       echo "$acrPmeLatest">>"$outFilePmeMCR"
       docker tag "$sourceImage" "$acrPmeLatest"
     else
