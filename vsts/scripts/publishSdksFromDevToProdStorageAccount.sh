@@ -83,7 +83,7 @@ function copyPlatformBlobsToProd() {
     copyDefaultVersionFile $defaultVersionFile "$platformName"
 }
 
-if [ ! -f "$azCopyDir/azcopy" ]; then
+# if [ ! -f "$azCopyDir/azcopy" ]; then
     curl -SL https://aka.ms/downloadazcopylinux64 -o /tmp/azcopy_download.tar.gz
     tar -xvf /tmp/azcopy_download.tar.gz -C /tmp
     rm -rf /tmp/azcopy_download.tar.gz
@@ -92,7 +92,7 @@ if [ ! -f "$azCopyDir/azcopy" ]; then
 
     echo "Version of azcopy tool being used:"
     $azCopyDir/azcopy --version
-fi
+# fi
 
 copyPlatformBlobsToProd "dotnet"
 copyPlatformBlobsToProd "python"
