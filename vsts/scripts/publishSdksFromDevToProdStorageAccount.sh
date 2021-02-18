@@ -48,7 +48,7 @@ function copyBlob() {
         echo "Blob '$blobName' does not exist in Prod storage container '$platformName'. Copying it..."
         "$azCopyDir/azcopy" copy \
             "$DEV_SDK_STORAGE_BASE_URL/$platformName/$blobName?$DEV_STORAGE_SAS_TOKEN" \
-            "$PROD_SDK_STORAGE_BASE_URL/$platformName/$blobName?$PROD_STORAGE_SAS_TOKEN"
+            "$PROD_SDK_STORAGE_BASE_URL/$platformName/$blobName?$PROD_STORAGE_SAS_TOKEN" --recursive
     fi
 }
 
