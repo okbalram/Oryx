@@ -92,7 +92,7 @@ function copyPlatformBlobsToProd() {
 
     echo "Version of azcopy tool being used:"
     $azCopyDir/azcopy --version
-    $azCopyDir/azcopy login --identity
+    $azCopyDir/azcopy login --tenant-id 975f013f-7f24-47e8-a7d3-abc4752bf346
 # fi
 
 copyPlatformBlobsToProd "dotnet"
