@@ -48,7 +48,7 @@ function copyBlob() {
         echo "Blob '$blobName' does not exist in Prod storage container '$platformName'. Copying it..."
         "$azCopyDir/azcopy" copy \
             "$DEV_SDK_STORAGE_BASE_URL/$platformName/$blobName?$DEV_STORAGE_SAS_TOKEN" \
-            "$PROD_SDK_STORAGE_BASE_URL/$platformName/$blobName?$PROD_STORAGE_SAS_TOKEN" --recursive
+            "$PROD_SDK_STORAGE_BASE_URL/$platformName/$blobName?$PROD_STORAGE_SAS_TOKEN"
     fi
 }
 
@@ -84,7 +84,7 @@ function copyPlatformBlobsToProd() {
 }
 
 if [ ! -f "$azCopyDir/azcopy" ]; then
-    curl -SL https://aka.ms/downloadazcopy-v10-linux -o /tmp/azcopy_download.tar.gz
+    curl -SL https://aka.ms/downloadazcopylinux64 -o /tmp/azcopy_download.tar.gz
     tar -xvf /tmp/azcopy_download.tar.gz -C /tmp
     rm -rf /tmp/azcopy_download.tar.gz
     mkdir -p $azCopyDir
