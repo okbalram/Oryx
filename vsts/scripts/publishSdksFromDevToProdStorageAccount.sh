@@ -84,7 +84,7 @@ function copyPlatformBlobsToProd() {
 }
 
 # if [ ! -f "$azCopyDir/azcopy" ]; then
-    curl -SL https://aka.ms/downloadazcopylinux64 -o /tmp/azcopy_download.tar.gz
+    curl -SL https://aka.ms/downloadazcopy-v10-linux -o /tmp/azcopy_download.tar.gz
     tar -xvf /tmp/azcopy_download.tar.gz -C /tmp
     rm -rf /tmp/azcopy_download.tar.gz
     mkdir -p $azCopyDir
@@ -92,7 +92,7 @@ function copyPlatformBlobsToProd() {
 
     echo "Version of azcopy tool being used:"
     $azCopyDir/azcopy --version
-    # $azCopyDir/azcopy login --tenant-id 975f013f-7f24-47e8-a7d3-abc4752bf346
+    $azCopyDir/azcopy login --tenant-id 975f013f-7f24-47e8-a7d3-abc4752bf346
 # fi
 
 copyPlatformBlobsToProd "dotnet"
