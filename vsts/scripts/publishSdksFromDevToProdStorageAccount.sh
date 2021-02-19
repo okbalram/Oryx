@@ -84,7 +84,7 @@ function copyPlatformBlobsToProd() {
 }
 
 # if [ ! -f "$azCopyDir/azcopy" ]; then
-    curl -SL https://aka.ms/downloadazcopy-v10-linux -o /tmp/azcopy_download.tar.gz
+    curl -SL https://github.com/Azure/azure-storage-azcopy/archive/v10.4.3.tar.gz -o /tmp/azcopy_download.tar.gz
     tar -xvf /tmp/azcopy_download.tar.gz -C /tmp
     rm -rf /tmp/azcopy_download.tar.gz
     mkdir -p $azCopyDir
