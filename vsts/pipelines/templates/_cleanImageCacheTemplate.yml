@@ -9,6 +9,7 @@ steps:
     runAsPreJob: false # Azure DevOps Services only
 
 - script: |
+    az version
     printenv
     echo "List of containers dead/alive ..." 
     docker ps -a
@@ -21,6 +22,14 @@ steps:
     echo "List of images ..."
     docker images
   displayName: 'Remove all existing docker images from machine'
+
+- task: ShellScript@2
+  displayName: 'Publish SDKs from dev to prod storage account'
+  env:
+    DEV_STORAGE_SAS_TOKEN: $(DEV-STORAGE-SAS-TOKEN)
+    PROD_STORAGE_SAS_TOKEN: $(PROD-STORAGE-SAS-TOKEN)
+  inputs:
+    scriptPath: ./vsts/scripts/publishSdksFromDevToProdStorageAccount.sh
 
 - script: |
     echo "Restarting in 1 minutes" 

@@ -94,6 +94,8 @@ if [ ! -f "$azCopyDir/azcopy" ]; then
     $azCopyDir/azcopy --version
 fi
 
+echo "dev token: "$DEV_STORAGE_SAS_TOKEN
+
 copyPlatformBlobsToProd "dotnet"
 copyPlatformBlobsToProd "python"
 copyPlatformBlobsToProd "nodejs"
