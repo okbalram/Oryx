@@ -16,6 +16,11 @@ function blobExistsInProd() {
 	local containerName="$1"
 	local blobName="$2"
 	local exitCode=1
+
+    if [ "$blobName" == "defaultVersion.txt" ]; then
+        return 1
+    fi
+
 	curl -I $PROD_SDK_STORAGE_BASE_URL/$containerName/$blobName 2> /tmp/curlError.txt 1> /tmp/curlOut.txt
 	grep "HTTP/1.1 200 OK" /tmp/curlOut.txt &> /dev/null
 	exitCode=$?
@@ -31,7 +36,7 @@ function blobExistsInProd() {
 function copyDefaultVersionFile() {
     local defaultVersionFile="$1"
     local platformName="$2"
-    "$azCopyDir/azcopy" copy \
+    "$azCopyDir/azcopy" cp \
         "$defaultVersionFile" \
         "$PROD_SDK_STORAGE_BASE_URL/$platformName/defaultVersion.txt?$PROD_STORAGE_SAS_TOKEN"
 }
@@ -46,9 +51,11 @@ function copyBlob() {
     else
         echo
         echo "Blob '$blobName' does not exist in Prod storage container '$platformName'. Copying it..."
-        "$azCopyDir/azcopy" copy \
-            "$DEV_SDK_STORAGE_BASE_URL/$platformName/$blobName?$DEV_STORAGE_SAS_TOKEN" \
-            "$PROD_SDK_STORAGE_BASE_URL/$platformName/$blobName?$PROD_STORAGE_SAS_TOKEN"
+        devStorage=$DEV_SDK_STORAGE_BASE_URL/$platformName/$blobName?$DEV_STORAGE_SAS_TOKEN
+        prodStorage=$PROD_SDK_STORAGE_BASE_URL/$platformName/$blobName?$PROD_STORAGE_SAS_TOKEN
+        "$azCopyDir/azcopy" cp \
+            "$devStorage" \
+            "$prodStorage"
     fi
 }
 
@@ -80,7 +87,8 @@ function copyPlatformBlobsToProd() {
         copyBlob "$platformName" "$platformName-$version.tar.gz"
 	done 3< "$versionsFile"
 
-    copyDefaultVersionFile $defaultVersionFile "$platformName"
+    copyBlob "$platformName" "defaultVersion.txt"
+    #copyDefaultVersionFile $defaultVersionFile "$platformName"
 }
 
 if [ ! -f "$azCopyDir/azcopy" ]; then
@@ -93,6 +101,8 @@ if [ ! -f "$azCopyDir/azcopy" ]; then
     echo "Version of azcopy tool being used:"
     $azCopyDir/azcopy --version
 fi
+
+echo "dev token: "$DEV_STORAGE_SAS_TOKEN
 
 copyPlatformBlobsToProd "dotnet"
 copyPlatformBlobsToProd "python"
