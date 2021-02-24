@@ -4,7 +4,7 @@ steps:
 - task: AzureKeyVault@1
   inputs:
     azureSubscription: oryxSP
-    keyVaultName: 
+    keyVaultName: Oryx
     secretsFilter: '*'
     runAsPreJob: false # Azure DevOps Services only
 
